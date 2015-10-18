@@ -1,0 +1,10 @@
+---
+- hosts: all
+  user: core
+  sudo: yes
+
+  vars_files:
+    - staging_vars.yml
+
+  tasks:
+    - include: tasks.yml

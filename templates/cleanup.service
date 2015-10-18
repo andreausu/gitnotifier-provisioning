@@ -1,0 +1,18 @@
+[Unit]
+Description=Cleanup Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=10min
+StartLimitInterval=5min
+StartLimitBurst=50
+ExecStart=/bin/bash -c '\
+  while true; do \
+    rm /var/lib/docker/tmp/*; docker rmi $(docker images -aq); docker rm $(docker ps -a | grep Exited | awk "{print $1 }"); \
+    sleep 86400; \
+  done'
+Restart=always
+
+[X-Fleet]
+Global=true

@@ -1,0 +1,15 @@
+[Unit]
+Description=Check uptime Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=10min
+StartLimitInterval=5min
+StartLimitBurst=50
+ExecStart=/bin/bash -c '\
+  while true; do \
+    /bin/bash /home/core/check-uptime.sh; \
+    sleep 30; \
+  done'
+Restart=always

@@ -1,0 +1,10 @@
+---
+- hosts: all
+  user: core
+  sudo: yes
+
+  vars_files:
+    - production_vars.yml
+
+  tasks:
+    - include: tasks.yml

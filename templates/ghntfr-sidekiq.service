@@ -1,0 +1,34 @@
+[Unit]
+Description=GitNotifier Sidekiq {{ app.env }} instance
+Requires=flanneld.service
+After=flanneld.service
+
+[Service]
+TimeoutStartSec=10min
+StartLimitInterval=5min
+StartLimitBurst=50
+ExecStartPre=-/usr/bin/docker kill ghntfr-sidekiq-{{ app.env }}
+ExecStartPre=-/usr/bin/docker rm ghntfr-sidekiq-{{ app.env }}
+ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-sidekiq:{{ app.docker_tag }}
+ExecStart=/usr/bin/docker run --rm --name ghntfr-sidekiq-{{ app.env }} --log-driver=none \
+  -e APP_ENV={{ app.env }} \
+  -e APP_CONFIG_REDIS_HOST='{{ app.redis_host }}' \
+  -e APP_CONFIG_REDIS_PORT={{ app.redis_port }} \
+  -e APP_CONFIG_REDIS_DB={{ app.redis_db }} \
+  -e APP_CONFIG_GITHUB_CLIENT_ID='{{ app.github_id }}' \
+  -e APP_CONFIG_GITHUB_CLIENT_SECRET='{{ app.github_secret }}' \
+  -e APP_CONFIG_DOMAIN='{{ app.domain }}' \
+  -e APP_CONFIG_SECRET='{{ app.secret }}' \
+  -e APP_CONFIG_MAIL_ENABLE={{ app.mail_enable }} \
+  -e APP_CONFIG_MAIL_METHOD='{{ app.mail_method }}' \
+  -e APP_CONFIG_MAIL_FROM='{{ app.mail_from }}' \
+  -e APP_CONFIG_MAIL_HOST='{{ app.mail_host }}' \
+  -e APP_CONFIG_MAIL_PORT='{{ app.mail_port }}' \
+  -e APP_CONFIG_MAIL_USER='' \
+  -e APP_CONFIG_MAIL_PASSWORD='' \
+  -e APP_CONFIG_MAIL_SSL={{ app.mail_ssl }} \
+  -e APP_NEWRELIC_API_KEY={{ newrelic_api_key }} \
+  andreausu/ghntfr-sidekiq:{{ app.docker_tag }}
+
+ExecStop=/usr/bin/docker stop ghntfr-sidekiq-{{ app.env }}
+Restart=always

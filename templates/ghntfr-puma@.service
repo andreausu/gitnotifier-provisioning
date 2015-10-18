@@ -1,0 +1,34 @@
+[Unit]
+Description=GitNotifier Puma {{ app.env }} instance
+Requires=flanneld.service
+After=flanneld.service
+Wants=ghntfr-puma-discovery-{{ app.env }}@%i.service
+Before=ghntfr-puma-discovery-{{ app.env }}@%i.service
+
+[Service]
+TimeoutStartSec=10min
+StartLimitInterval=5min
+StartLimitBurst=50
+ExecStartPre=-/usr/bin/docker kill ghntfr-puma-{{ app.env }}
+ExecStartPre=-/usr/bin/docker rm ghntfr-puma-{{ app.env }}
+ExecStartPre=/usr/bin/etcdctl set /vulcand/backends/ghntfr-{{ app.env }}/backend '{"Type": "http"}'
+ExecStartPre=/usr/bin/etcdctl set /vulcand/frontends/ghntfr-{{ app.env }}/frontend '{"Id": "ghntfr-{{ app.env }}", "Type": "http", "BackendId": "ghntfr-{{ app.env }}", "Route": "Host(`{{ app.domain }}`)", "Settings": {"FailoverPredicate":"(IsNetworkError() || ResponseCode() == 503) && Attempts() <= 2"}}'
+ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-puma:{{ app.docker_tag }}
+ExecStart=/usr/bin/docker run --rm --name ghntfr-puma-{{ app.env }} -p 9292:9292 --log-driver=none \
+  -e APP_ENV={{ app.env }} \
+  -e APP_CONFIG_REDIS_HOST={{ app.redis_host }} \
+  -e APP_CONFIG_REDIS_PORT={{ app.redis_port }} \
+  -e APP_CONFIG_REDIS_DB={{ app.redis_db }} \
+  -e APP_CONFIG_GITHUB_CLIENT_ID={{ app.github_id }} \
+  -e APP_CONFIG_GITHUB_CLIENT_SECRET={{ app.github_secret }} \
+  -e APP_CONFIG_DOMAIN={{ app.domain }} \
+  -e APP_CONFIG_SECRET="{{ app.secret }}" \
+  -e APP_CONFIG_MAIL_ENABLE={{ app.mail_enable }} \
+  -e APP_NEWRELIC_API_KEY={{ newrelic_api_key }} \
+  andreausu/ghntfr-puma:{{ app.docker_tag }}
+
+ExecStop=/usr/bin/docker stop ghntfr-puma-{{ app.env }}
+Restart=always
+
+[X-Fleet]
+Conflicts=ghntfr-puma-{{ app.env }}@*.service

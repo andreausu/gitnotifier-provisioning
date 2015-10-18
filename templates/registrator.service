@@ -1,0 +1,19 @@
+[Unit]
+Description=registrator
+After=skydns.service
+Requires=skydns.service
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=10min
+StartLimitInterval=5min
+StartLimitBurst=50
+ExecStartPre=-/usr/bin/docker kill registrator
+ExecStartPre=-/usr/bin/docker rm registrator
+ExecStartPre=/usr/bin/docker pull progrium/registrator:latest
+ExecStart=/usr/bin/docker run --rm -v /var/run/docker.sock:/tmp/docker.sock -h registrator --name registrator progrium/registrator -internal skydns2://${COREOS_PRIVATE_IPV4}:4001/skydns.local
+ExecStop=/usr/bin/docker stop registrator
+Restart=always
+
+[X-Fleet]
+Global=true

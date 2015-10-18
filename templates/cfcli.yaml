@@ -1,0 +1,4 @@
+defaults:
+    token: {{ cloudflare.token }}
+    email: {{ cloudflare.email }}
+    domain: {{ cloudflare.domain }}

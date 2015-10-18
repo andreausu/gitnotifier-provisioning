@@ -1,0 +1,11 @@
+[Unit]
+Description=Discovery Puma {{ app.env }}
+BindsTo=ghntfr-puma-{{ app.env }}@%i.service
+
+[Service]
+EnvironmentFile=/etc/environment
+ExecStart=/bin/sh -c "while true; do etcdctl set /vulcand/backends/ghntfr-{{ app.env }}/servers/puma%i '{\"URL\": \"http://${COREOS_PRIVATE_IPV4}:9292\"}' --ttl 30;sleep 25;done"
+ExecStop=/usr/bin/etcdctl rm /vulcand/backends/ghntfr-{{ app.env }}/servers/puma%i
+
+[X-Fleet]
+MachineOf=ghntfr-puma-{{ app.env }}@%i.service

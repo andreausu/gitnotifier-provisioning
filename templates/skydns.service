@@ -1,0 +1,19 @@
+[Unit]
+Description=SkyDNS
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=10min
+StartLimitInterval=5min
+StartLimitBurst=50
+ExecStartPre=/usr/bin/etcdctl set /skydns/config '{"dns_addr":"0.0.0.0:53","ttl":30, "nameservers": ["8.8.8.8:53","8.8.4.4:53"]}'
+ExecStartPre=-/usr/bin/docker kill skydns
+ExecStartPre=-/usr/bin/docker rm skydns
+ExecStartPre=/usr/bin/docker pull skynetservices/skydns:latest
+ExecStart=/usr/bin/docker run --rm --net host --name skydns -p 53:53/udp skynetservices/skydns
+ExecStop=/usr/bin/docker stop skydns
+Restart=always
+
+[X-Fleet]
+Global=true

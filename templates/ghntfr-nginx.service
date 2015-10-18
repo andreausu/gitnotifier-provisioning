@@ -1,0 +1,19 @@
+[Unit]
+Description=GitNotifier Nginx {{ app.env }} instance
+Requires=ghntfr-puma.service
+After=ghntfr-puma.service
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=10min
+StartLimitInterval=5min
+StartLimitBurst=50
+ExecStartPre=-/usr/bin/docker kill ghntfr-nginx-{{ app.env }}
+ExecStartPre=-/usr/bin/docker rm ghntfr-nginx-{{ app.env }}
+ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-nginx:{{ app.docker_tag }}
+ExecStart=/usr/bin/docker run --rm --name ghntfr-nginx-{{ app.env }} -p 80:80 -p 443:443 -e APP_UPSTREAM_PUMA=ghntfr-puma.skydns.local -e APP_RESOLVER_NGINX=${COREOS_PRIVATE_IPV4} -e APP_DOMAIN_NAME=coreos.gitnotifier.io andreausu/ghntfr-nginx:{{ app.docker_tag }}
+ExecStop=/usr/bin/docker stop ghntfr-nginx-{{ app.env }}
+Restart=always
+
+[X-Fleet]
+Global=true

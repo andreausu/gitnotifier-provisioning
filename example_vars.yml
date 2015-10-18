@@ -1,0 +1,26 @@
+---
+
+app:
+  env: development
+  docker_tag: master
+  secret: 'somesecret'
+  redis_host: redis
+  redis_port: 6379
+  redis_db: 1
+  github_id: someid
+  github_secret: somesecret
+  domain: gitnotifier.local
+  mail_enable: true
+  mail_method: smtp
+  mail_from: "Git\\ Notifier\\ <noreply@gitnotifier.local>"
+  mail_host: mailhost
+  mail_port: 25
+  mail_ssl: false
+  enqueuer_sleep_time: 300
+
+newrelic_api_key: somekey
+
+cloudflare:
+  token: xxx
+  email: someuser@email.com
+  domain: gitnotifier.local

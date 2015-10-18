@@ -1,0 +1,15 @@
+[Unit]
+Description=This will rebalance services on startup
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/bin/bash /home/core/rebalance-services.sh
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true

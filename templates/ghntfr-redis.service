@@ -1,0 +1,16 @@
+[Unit]
+Description=GitNotifier Redis instance
+Requires=flanneld.service
+After=flanneld.service
+
+
+[Service]
+TimeoutStartSec=10min
+StartLimitInterval=5min
+StartLimitBurst=50
+ExecStartPre=-/usr/bin/docker kill ghntfr-redis
+ExecStartPre=-/usr/bin/docker rm ghntfr-redis
+ExecStartPre=/usr/bin/docker pull redis:3
+ExecStart=/usr/bin/docker run --rm --name ghntfr-redis -p 6379 redis:3 redis-server
+ExecStop=/usr/bin/docker stop ghntfr-redis
+Restart=always
