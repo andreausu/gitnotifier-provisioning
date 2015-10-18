@@ -2,7 +2,7 @@
 
 This repo is pretty opinionated, these are the assumptions:
 
-1. You're running a CoreOS cluster (https://gitnotifier.io runs on a 3 nodes cluster on DigitalOcean)
+1. You're running a CoreOS cluster (https://gitnotifier.io runs on a 3 nodes cluster on DigitalOcean).
 2. Vulcand is deployed on every node to provide HA via multiple A records.
 3. DNS is handled by CloudFlare, we add/remove nodes IPs via their APIs to ensure HA.
 4. Redis runs on an external node, not managed by this playbook.
