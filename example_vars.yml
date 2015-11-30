@@ -17,6 +17,8 @@ app:
   mail_port: 25
   mail_ssl: false
   enqueuer_sleep_time: 300
+  email_dev_on_signup: false
+  dev_email_address: some@email.com
 
 newrelic_api_key: somekey
 

@@ -24,6 +24,8 @@ ExecStart=/usr/bin/docker run --rm --name ghntfr-puma-{{ app.env }} -p 9292:9292
   -e APP_CONFIG_DOMAIN={{ app.domain }} \
   -e APP_CONFIG_SECRET="{{ app.secret }}" \
   -e APP_CONFIG_MAIL_ENABLE={{ app.mail_enable }} \
+  -e APP_CONFIG_EMAIL_DEV_ON_SIGNUP={{ app.email_dev_on_signup }} \
+  -e APP_CONFIG_DEV_EMAIL_ADDRESS={{ app.dev_email_address }} \
   -e APP_NEWRELIC_API_KEY={{ newrelic_api_key }} \
   andreausu/ghntfr-puma:{{ app.docker_tag }}
 
