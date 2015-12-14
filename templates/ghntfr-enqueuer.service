@@ -4,9 +4,10 @@ Requires=flanneld.service
 After=flanneld.service
 
 [Service]
+RestartSec=1min
 TimeoutStartSec=10min
-StartLimitInterval=5min
-StartLimitBurst=50
+StartLimitInterval=180min
+StartLimitBurst=150
 ExecStartPre=-/usr/bin/docker kill ghntfr-enqueuer-{{ app.env }}
 ExecStartPre=-/usr/bin/docker rm ghntfr-enqueuer-{{ app.env }}
 ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-enqueuer:{{ app.docker_tag }}
