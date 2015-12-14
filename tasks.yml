@@ -1,5 +1,9 @@
 ---
 
+- name: Ensure that firewall is at the latest version
+  template: src=templates/firewall/iptables-rules dest=/var/lib/iptables/rules-save owner=root group=root mode=0644
+  notify: refresh iptables
+
 - name: Ensure swapon unit is present
   template: src=templates/swapon.service dest=/etc/systemd/system owner=core group=core
 

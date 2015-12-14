@@ -8,3 +8,6 @@
 
   tasks:
     - include: tasks.yml
+
+  handlers:
+    - include: handlers.yml

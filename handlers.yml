@@ -1,0 +1,2 @@
+- name: refresh iptables
+  shell: /sbin/iptables-restore /var/lib/iptables/rules-save; systemctl restart docker.service
