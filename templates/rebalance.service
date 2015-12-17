@@ -6,7 +6,16 @@ After=docker.service
 [Service]
 Type=oneshot
 RemainAfterExit=true
-ExecStart=/usr/bin/bash /home/core/rebalance-services.sh
+TimeoutStartSec=10min
+ExecStartPre=-/usr/bin/docker kill rebalance-services
+ExecStartPre=-/usr/bin/docker rm rebalance-services
+ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-rebalance-services:latest
+ExecStart=/usr/bin/docker run --name rebalance-services --rm --net=host \
+  -v /etc/systemd/system:/etc/systemd/system:ro \
+  -v /usr/bin/etcdctl:/usr/bin/etcdctl:ro \
+  -v /usr/bin/fleetctl:/usr/bin/fleetctl:ro \
+  -v /var/run/fleet.sock:/var/run/fleet.sock \
+  andreausu/ghntfr-rebalance-services:latest
 
 [Install]
 WantedBy=multi-user.target

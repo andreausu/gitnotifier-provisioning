@@ -39,6 +39,3 @@
 
 - name: Ensure deployment script is present
   template: src=templates/ghntfr-deploy.sh dest=/home/core/ghntfr-deploy.sh owner=core group=core mode=0775
-
-- name: Ensure rebalance services script is present
-  template: src=templates/rebalance-services.sh dest=/home/core/rebalance-services.sh owner=core group=core mode=0775

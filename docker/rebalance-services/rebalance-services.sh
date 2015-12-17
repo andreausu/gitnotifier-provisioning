@@ -1,9 +1,17 @@
-#!/bin/sh
+#!/bin/bash
+
+set -e
 
 cd /etc/systemd/system
 
 rebuild () {
   fleetctl list-units | grep $1 | cut -f1 -d. | while read -r unit ; do
+
+    if [ ! -f "$unit.service" ]; then
+        echo "File $unit.service not found!"
+        etcdctl rm rebalance
+        exit 1
+    fi
 
     printf "unit:> %s\n" $unit
 
