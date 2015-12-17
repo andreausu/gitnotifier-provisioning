@@ -6,7 +6,6 @@
 {% for host in groups['coreos'] if host != inventory_hostname %}
 -A INPUT -i eth1 -s {{ hostvars[host]['ansible_eth1']['ipv4']['address'] }} -j ACCEPT
 {% endfor %}
--A INPUT -i eth1 -j ACCEPT
 -A INPUT -s 172.16.0.0/12 -j ACCEPT
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p tcp --dport 22 -j ACCEPT
