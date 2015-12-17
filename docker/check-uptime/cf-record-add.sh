@@ -11,12 +11,12 @@ ETCD_KEY=`echo "$1$2$3$4" | md5sum | cut -f1 -d' '`
 
 echo "$ECD_KEY"
 
-cd /home/core/cfcli
+cd /usr/src/app
 
 RES=`curl -i -s http://127.0.0.1:2379/v2/keys/cfcli/locks/"$ETCD_KEY"?prevExist=false -XPUT -d value=1 -d ttl=600`
 
 if [[ "$RES" == *"201 Created"* ]]; then
-  RES=`docker run --rm --name cfcli -v "$PWD":/usr/src/myapp -w /usr/src/myapp node:4 node bin/cfcli -c ./.cfcli.yaml -f csv listrecords`
+  RES=`cfcli -c .cfcli.yaml -f csv listrecords`
 
   EXIT_CODE=$?
 
@@ -28,7 +28,7 @@ if [[ "$RES" == *"201 Created"* ]]; then
 
   if [[ $EXIT_CODE == 0 && "$RES" != *"A,$SUBDOMAIN,$4,Auto"* ]]; then
     echo "Adding record"
-    docker run --rm --name cfcli -v "$PWD":/usr/src/myapp -w /usr/src/myapp node:4 node bin/cfcli -c ./.cfcli.yaml -d "$1" -a -l 1 -t "$2" addrecord "$3" "$4"
+    cfcli -c .cfcli.yaml -d "$1" -a -l 1 -t "$2" addrecord "$3" "$4"
     EXIT_CODE=$?
     echo "$EXIT_CODE"
     if [[ $EXIT_CODE == 0 ]]; then

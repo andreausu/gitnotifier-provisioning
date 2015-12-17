@@ -1,0 +1,4 @@
+defaults:
+    token: CLOUDFLARE_TOKEN
+    email: CLOUDFLARE_EMAIL
+    domain: CLOUDFLARE_DOMAIN

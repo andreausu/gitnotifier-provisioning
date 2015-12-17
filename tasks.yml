@@ -31,9 +31,6 @@
 - name: Ensure rebalance service unit is present
   template: src=templates/rebalance.service dest=/etc/systemd/system owner=core group=core
 
-- name: Ensure check uptime service unit is present
-  template: src=templates/check-uptime.service dest=/etc/systemd/system owner=core group=core
-
 - name: Ensure rolling restart script is present
   template: src=templates/rolling-restart.sh dest=/home/core/rolling-restart.sh owner=core group=core mode=0775
 
@@ -45,19 +42,3 @@
 
 - name: Ensure rebalance services script is present
   template: src=templates/rebalance-services.sh dest=/home/core/rebalance-services.sh owner=core group=core mode=0775
-
-- name: Ensure cloudflare management scripts are present
-  template: src=templates/{{ item }} dest=/home/core/{{ item }} owner=core group=core mode=0775
-  with_items:
-    - cf-record-add.sh
-    - cf-record-del.sh
-    - check-uptime.sh
-
-- name: Ensure cfcli is present
-  git: repo=https://github.com/danielpigott/cloudflare-cli.git dest=/home/core/cfcli version=52e4661aa92d3b5ffae221fddd9f0c446f1d192b update=no
-
-- name: Run npm install
-  shell: docker run -it --rm --name cfcli -v "$PWD":/usr/src/myapp -w /usr/src/myapp node:4 npm install chdir=/home/core/cfcli creates=/home/core/cfcli/node_modules/
-
-- name: Ensure cfcli configuration is in place
-  template: src=templates/cfcli.yaml dest=/home/core/cfcli/.cfcli.yaml owner=core group=core mode=0600
