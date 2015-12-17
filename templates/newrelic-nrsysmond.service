@@ -7,18 +7,18 @@ Requires=docker.service
 TimeoutStartSec=10min
 StartLimitInterval=5min
 StartLimitBurst=50
-ExecStartPre=-/usr/bin/docker kill nrsysmond
-ExecStartPre=-/usr/bin/docker rm nrsysmond
-ExecStartPre=/usr/bin/docker pull andreausu/nrsysmond:latest
-ExecStart=/usr/bin/docker run --name nrsysmond --rm --log-driver=none \
+ExecStartPre=-/usr/bin/docker kill newrelic-sysmond
+ExecStartPre=-/usr/bin/docker rm newrelic-sysmond
+ExecStartPre=/usr/bin/docker pull andreausu/newrelic-sysmond:latest
+ExecStart=/usr/bin/docker run --name newrelic-sysmond --rm --log-driver=none \
   --privileged=true --net=host --pid=host \
   -v /sys:/sys \
   -v /dev:/dev \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -e NRSYSMOND_license_key={{ newrelic_api_key }} \
-  -e NRSYSMOND_hostname=%H \
-  andreausu/nrsysmond:latest
-ExecStop=-/usr/bin/docker stop -t 30 nrsysmond
+  -e NEW_RELIC_LICENSE_KEY={{ newrelic_api_key }} \
+  -e CUSTOM_HOSTNAME=%H \
+  andreausu/newrelic-sysmond:latest
+ExecStop=-/usr/bin/docker stop -t 30 newrelic-sysmond
 Restart=always
 
 [Install]
