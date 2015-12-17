@@ -9,7 +9,7 @@ StartLimitInterval=5min
 StartLimitBurst=50
 ExecStartPre=-/usr/bin/docker kill newrelic-sysmond
 ExecStartPre=-/usr/bin/docker rm newrelic-sysmond
-ExecStartPre=/usr/bin/docker pull andreausu/newrelic-sysmond:latest
+ExecStartPre=/usr/bin/docker pull gitnotifier/newrelic-sysmond:latest
 ExecStart=/usr/bin/docker run --name newrelic-sysmond --rm --log-driver=none \
   --privileged=true --net=host --pid=host \
   -v /sys:/sys \
@@ -17,7 +17,7 @@ ExecStart=/usr/bin/docker run --name newrelic-sysmond --rm --log-driver=none \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -e NEW_RELIC_LICENSE_KEY={{ newrelic_api_key }} \
   -e CUSTOM_HOSTNAME=%H \
-  andreausu/newrelic-sysmond:latest
+  gitnotifier/newrelic-sysmond:latest
 ExecStop=-/usr/bin/docker stop -t 30 newrelic-sysmond
 Restart=always
 
