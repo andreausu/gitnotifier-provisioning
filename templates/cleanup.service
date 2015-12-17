@@ -9,7 +9,7 @@ StartLimitInterval=5min
 StartLimitBurst=50
 ExecStart=/bin/bash -c '\
   while true; do \
-    rm /var/lib/docker/tmp/*; docker rmi $(docker images -aq); docker rm $(docker ps -a | grep Exited | awk "{print $1 }"); \
+    rm -rf /var/lib/docker/tmp/*; docker rm -v $(docker ps -a -q -f status=exited); docker rm -v $(docker ps -a -q -f status=created); docker rm -v $(docker ps -a -q -f status=dead); docker rmi $(docker images -f "dangling=true" -q); \
     sleep 86400; \
   done'
 Restart=always
