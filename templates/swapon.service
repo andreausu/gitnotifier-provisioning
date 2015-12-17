@@ -1,5 +1,6 @@
 [Unit]
 Description=Turn on swap
+After=sysctl-settings.service
 
 [Service]
 Type=oneshot

@@ -4,6 +4,9 @@
   template: src=templates/firewall/iptables-rules dest=/var/lib/iptables/rules-save owner=root group=root mode=0644
   notify: refresh iptables
 
+- name: Ensure sysctl-settings unit is present
+  template: src=templates/sysctl-settings.service dest=/etc/systemd/system owner=core group=core
+
 - name: Ensure swapon unit is present
   template: src=templates/swapon.service dest=/etc/systemd/system owner=core group=core
 

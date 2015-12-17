@@ -1,0 +1,13 @@
+[Unit]
+Description=Adjust sysctl settings
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/sysctl vm.swappiness=30 vm.vfs_cache_pressure=50
+
+[Install]
+WantedBy=multi-user.target
+
+[X-Fleet]
+Global=true
