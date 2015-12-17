@@ -10,7 +10,7 @@ StartLimitInterval=180min
 StartLimitBurst=150
 ExecStartPre=-/usr/bin/docker kill ghntfr-enqueuer-{{ app.env }}
 ExecStartPre=-/usr/bin/docker rm ghntfr-enqueuer-{{ app.env }}
-ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-enqueuer:{{ app.docker_tag }}
+ExecStartPre=/usr/bin/docker pull gitnotifier/enqueuer:{{ app.docker_tag }}
 ExecStart=/usr/bin/docker run --rm --name ghntfr-enqueuer-{{ app.env }} --log-driver=none \
   -e APP_ENV={{ app.env }} \
   -e APP_CONFIG_REDIS_HOST={{ app.redis_host }} \
@@ -23,7 +23,7 @@ ExecStart=/usr/bin/docker run --rm --name ghntfr-enqueuer-{{ app.env }} --log-dr
   -e APP_CONFIG_MAIL_ENABLE={{ app.mail_enable }} \
   -e APP_ENQUEUER_SLEEP_TIME={{ app.enqueuer_sleep_time }} \
   -e APP_NEWRELIC_API_KEY={{ newrelic_api_key }} \
-  andreausu/ghntfr-enqueuer:{{ app.docker_tag }}
+  gitnotifier/enqueuer:{{ app.docker_tag }}
 
 ExecStop=/usr/bin/docker stop ghntfr-enqueuer-{{ app.env }}
 Restart=always

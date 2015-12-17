@@ -9,14 +9,14 @@ StartLimitInterval=5min
 StartLimitBurst=50
 ExecStartPre=-/usr/bin/docker kill check-uptime
 ExecStartPre=-/usr/bin/docker rm check-uptime
-ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-check-uptime:latest
+ExecStartPre=/usr/bin/docker pull gitnotifier/check-uptime:latest
 ExecStart=/usr/bin/docker run --rm --name check-uptime --log-driver=none --net=host \
   -v /usr/bin/etcdctl:/usr/bin/etcdctl:ro \
   -e CLOUDFLARE_TOKEN={{ cloudflare.token }} \
   -e CLOUDFLARE_EMAIL={{ cloudflare.email }} \
   -e CLOUDFLARE_DOMAIN={{ cloudflare.domain }} \
   -e IP_ADDRESSES="{% for host in play_hosts %}{{ host }} {% endfor %}" \
-  andreausu/ghntfr-check-uptime:latest
+  gitnotifier/check-uptime:latest
 
 ExecStop=/usr/bin/docker stop check-uptime
 Restart=always

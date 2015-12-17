@@ -9,13 +9,13 @@ RemainAfterExit=true
 TimeoutStartSec=10min
 ExecStartPre=-/usr/bin/docker kill rebalance-services
 ExecStartPre=-/usr/bin/docker rm rebalance-services
-ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-rebalance-services:latest
+ExecStartPre=/usr/bin/docker pull gitnotifier/rebalance-services:latest
 ExecStart=/usr/bin/docker run --name rebalance-services --rm --net=host \
   -v /etc/systemd/system:/etc/systemd/system:ro \
   -v /usr/bin/etcdctl:/usr/bin/etcdctl:ro \
   -v /usr/bin/fleetctl:/usr/bin/fleetctl:ro \
   -v /var/run/fleet.sock:/var/run/fleet.sock \
-  andreausu/ghntfr-rebalance-services:latest
+  gitnotifier/rebalance-services:latest
 
 [Install]
 WantedBy=multi-user.target

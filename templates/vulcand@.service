@@ -11,7 +11,7 @@ StartLimitBurst=50
 ExecStartPre=-/usr/bin/docker kill vulcand
 ExecStartPre=-/usr/bin/docker rm vulcand
 ExecStartPre=/usr/bin/docker pull mailgun/vulcand:v0.8.0-beta.3
-ExecStartPre=-/usr/bin/docker pull andreausu/ghntfr-check-uptime:latest
+ExecStartPre=-/usr/bin/docker pull gitnotifier/check-uptime:latest
 
 ExecStart=/usr/bin/docker run --rm --log-driver=none --name vulcand \
   -p 80:80 -p 443:443 -p 8182:8182 \
@@ -23,7 +23,7 @@ ExecStartPost=-/usr/bin/docker run --rm --log-driver=none --net=host \
   -e CLOUDFLARE_TOKEN={{ cloudflare.token }} \
   -e CLOUDFLARE_EMAIL={{ cloudflare.email }} \
   -e CLOUDFLARE_DOMAIN={{ cloudflare.domain }} \
-  andreausu/ghntfr-check-uptime:latest add {{ app.domain }} A @ ${COREOS_PUBLIC_IPV4}
+  gitnotifier/check-uptime:latest add {{ app.domain }} A @ ${COREOS_PUBLIC_IPV4}
 
 ExecStop=/usr/bin/docker stop vulcand
 
@@ -32,7 +32,7 @@ ExecStopPost=/usr/bin/docker run --rm --log-driver=none --net=host \
   -e CLOUDFLARE_TOKEN={{ cloudflare.token }} \
   -e CLOUDFLARE_EMAIL={{ cloudflare.email }} \
   -e CLOUDFLARE_DOMAIN={{ cloudflare.domain }} \
-  andreausu/ghntfr-check-uptime:latest del {{ app.domain }} A @ ${COREOS_PUBLIC_IPV4}
+  gitnotifier/check-uptime:latest del {{ app.domain }} A @ ${COREOS_PUBLIC_IPV4}
 Restart=always
 
 [X-Fleet]

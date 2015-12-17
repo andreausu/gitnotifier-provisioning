@@ -13,7 +13,7 @@ ExecStartPre=-/usr/bin/docker kill ghntfr-puma-{{ app.env }}
 ExecStartPre=-/usr/bin/docker rm ghntfr-puma-{{ app.env }}
 ExecStartPre=/usr/bin/etcdctl set /vulcand/backends/ghntfr-{{ app.env }}/backend '{"Type": "http"}'
 ExecStartPre=/usr/bin/etcdctl set /vulcand/frontends/ghntfr-{{ app.env }}/frontend '{"Id": "ghntfr-{{ app.env }}", "Type": "http", "BackendId": "ghntfr-{{ app.env }}", "Route": "Host(`{{ app.domain }}`)", "Settings": {"FailoverPredicate":"(IsNetworkError() || ResponseCode() == 503) && Attempts() <= 2"}}'
-ExecStartPre=/usr/bin/docker pull andreausu/ghntfr-puma:{{ app.docker_tag }}
+ExecStartPre=/usr/bin/docker pull gitnotifier/puma:{{ app.docker_tag }}
 ExecStart=/usr/bin/docker run --rm --name ghntfr-puma-{{ app.env }} -p 9292:9292 --log-driver=none \
   -e APP_ENV={{ app.env }} \
   -e APP_CONFIG_REDIS_HOST={{ app.redis_host }} \
@@ -27,7 +27,7 @@ ExecStart=/usr/bin/docker run --rm --name ghntfr-puma-{{ app.env }} -p 9292:9292
   -e APP_CONFIG_EMAIL_DEV_ON_SIGNUP={{ app.email_dev_on_signup }} \
   -e APP_CONFIG_DEV_EMAIL_ADDRESS={{ app.dev_email_address }} \
   -e APP_NEWRELIC_API_KEY={{ newrelic_api_key }} \
-  andreausu/ghntfr-puma:{{ app.docker_tag }}
+  gitnotifier/puma:{{ app.docker_tag }}
 
 ExecStop=/usr/bin/docker stop ghntfr-puma-{{ app.env }}
 Restart=always
