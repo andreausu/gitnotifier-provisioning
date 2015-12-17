@@ -29,7 +29,7 @@
   template: src=templates/vulcand@.service dest=/etc/systemd/system owner=core group=core
 
 - name: Ensure newrelic unit is present
-  template: src=templates/newrelic-nrsysmond.service dest=/etc/systemd/system owner=core group=core
+  template: src=templates/newrelic-sysmond.service dest=/etc/systemd/system owner=core group=core
 
 - name: Ensure rebalance service unit is present
   template: src=templates/rebalance.service dest=/etc/systemd/system owner=core group=core
