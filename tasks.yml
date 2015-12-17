@@ -34,6 +34,9 @@
 - name: Ensure rebalance service unit is present
   template: src=templates/rebalance.service dest=/etc/systemd/system owner=core group=core
 
+- name: Ensure check uptime service unit is present
+  template: src=templates/check-uptime.service dest=/etc/systemd/system owner=core group=core
+
 - name: Ensure rolling restart script is present
   template: src=templates/rolling-restart.sh dest=/home/core/rolling-restart.sh owner=core group=core mode=0775
 
