@@ -3,7 +3,7 @@ MAINTAINER Andrea Usuelli (andreausu@gmail.com)
 
 ENV NEW_RELIC_LICENSE_KEY=YOUR_LICENSE_KEY \
     CUSTOM_HOSTNAME=CUSTOM_HOSTNAME \
-    LOG_LEVEL=debug \
+    LOG_LEVEL=info \
     NEW_RELIC_VERSION=2.3.0.129
 
 RUN apt-get update && \
