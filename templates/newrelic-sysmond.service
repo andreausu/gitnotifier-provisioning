@@ -12,8 +12,9 @@ ExecStartPre=-/usr/bin/docker rm newrelic-sysmond
 ExecStartPre=/usr/bin/docker pull gitnotifier/newrelic-sysmond:latest
 ExecStart=/usr/bin/docker run --name newrelic-sysmond --rm --log-driver=none \
   --privileged=true --net=host --pid=host \
-  -v /sys:/sys \
-  -v /dev:/dev \
+  -v /sys:/host/sys:ro \
+  -v /dev:/host/dev:ro \
+  -v /proc:/host/proc:ro \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -e NEW_RELIC_LICENSE_KEY={{ newrelic_api_key }} \
   -e CUSTOM_HOSTNAME=%H \
